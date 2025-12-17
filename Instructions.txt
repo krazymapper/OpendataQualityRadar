@@ -1,0 +1,281 @@
+Create a complete MVP stack for "OpenData Quality Radar" with a professional, modern, and elegant UI/UX design.
+
+TECH STACK REQUIREMENTS:
+- Frontend: React 18 with TypeScript
+- Build tool: Vite
+- Mapping: Leaflet with React-Leaflet
+- UI Components: 
+  - Tailwind CSS v3.3+ (with custom design system)
+  - Framer Motion for animations
+  - Lucide React for icons
+  - @headlessui/react for accessible components
+  - Recharts for data visualization
+- Data fetching: TanStack Query v5
+- State management: Zustand
+- Table: TanStack Table v8
+- Date/Formatting: date-fns
+
+PROJECT STRUCTURE:
+```
+opendata-quality-radar/
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components/
+│   │   ├── ui/
+│   │   │   ├── button.tsx
+│   │   │   ├── card.tsx
+│   │   │   ├── badge.tsx
+│   │   │   ├── dialog.tsx
+│   │   │   ├── select.tsx
+│   │   │   ├── toggle.tsx
+│   │   │   ├── progress.tsx
+│   │   │   └── tooltip.tsx
+│   │   ├── map/
+│   │   │   ├── MapContainer.tsx
+│   │   │   ├── CustomTileLayer.tsx
+│   │   │   ├── IssueMarker.tsx
+│   │   │   ├── ClusterLayer.tsx
+│   │   │   └── MapControls.tsx
+│   │   ├── data/
+│   │   │   ├── DataTable.tsx
+│   │   │   ├── ColumnFilters.tsx
+│   │   │   ├── ExportMenu.tsx
+│   │   │   └── DetailPanel.tsx
+│   │   ├── dashboard/
+│   │   │   ├── StatsCards.tsx
+│   │   │   ├── IssueDistribution.tsx
+│   │   │   ├── ActivityTimeline.tsx
+│   │   │   └── RegionHeatmap.tsx
+│   │   ├── filters/
+│   │   │   ├── SearchBar.tsx
+│   │   │   ├── FilterSidebar.tsx
+│   │   │   ├── DateRangePicker.tsx
+│   │   │   └── ChipFilters.tsx
+│   │   ├── navigation/
+│   │   │   ├── Header.tsx
+│   │   │   ├── Sidebar.tsx
+│   │   │   ├── Breadcrumb.tsx
+│   │   │   └── MobileMenu.tsx
+│   │   └── feedback/
+│   │       ├── LoadingState.tsx
+│   │       ├── EmptyState.tsx
+│   │       ├── ErrorBoundary.tsx
+│   │       └── ToastProvider.tsx
+│   ├── lib/
+│   │   ├── api/
+│   │   │   ├── wikidata.ts
+│   │   │   ├── overpass.ts
+│   │   │   └── cache.ts
+│   │   ├── utils/
+│   │   │   ├── geospatial.ts
+│   │   │   ├── formatters.ts
+│   │   │   └── validators.ts
+│   │   ├── stores/
+│   │   │   └── issue.store.ts
+│   │   ├── hooks/
+│   │   │   ├── useDebounce.ts
+│   │   │   ├── useGeolocation.ts
+│   │   │   └── useMediaQuery.ts
+│   │   └── constants/
+│   │       └── config.ts
+│   ├── styles/
+│   │   ├── globals.css
+│   │   └── theme.css
+│   └── types/
+│       └── index.ts
+├── public/
+│   └── assets/
+│       ├── icons/
+│       └── illustrations/
+├── tailwind.config.js
+├── postcss.config.js
+├── tsconfig.json
+├── vite.config.ts
+└── package.json
+```
+
+DESIGN SYSTEM REQUIREMENTS:
+
+1. COLOR PALETTE (Modern, Professional):
+```css
+:root {
+  --primary-50: #f0f9ff;
+  --primary-100: #e0f2fe;
+  --primary-500: #0ea5e9;  /* Sky blue */
+  --primary-600: #0284c7;
+  
+  --secondary-500: #8b5cf6; /* Violet */
+  --secondary-600: #7c3aed;
+  
+  --success-500: #10b981;   /* Emerald */
+  --warning-500: #f59e0b;   /* Amber */
+  --error-500: #ef4444;     /* Red */
+  
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+}
+```
+
+2. TYPOGRAPHY:
+- Font: Inter (Google Fonts)
+- Headings: Semibold, clear hierarchy
+- Body: Regular, optimal line height
+- Monospace: JetBrains Mono for code/data
+
+3. SPACING & LAYOUT:
+- 8px base unit
+- Max-width container: 1440px
+- Responsive breakpoints: sm:640, md:768, lg:1024, xl:1280
+- Card border radius: 12px
+- Subtle shadows for depth
+
+4. ANIMATIONS:
+- Page transitions: fade in/out
+- Hover effects: subtle scale and shadow
+- Loading states: skeleton screens
+- Toast notifications: slide in/out
+
+CORE UI COMPONENTS WITH MODERN DESIGN:
+
+1. HEADER:
+   - Clean navigation with logo and search
+   - User preferences (theme, language)
+   - Quick stats preview
+   - Mobile hamburger menu
+
+2. SIDEBAR FILTERS (Collapsible):
+   - Region selector with map preview
+   - Issue type toggles (custom checkboxes)
+   - Date range with calendar picker
+   - Confidence slider
+   - Apply/Reset buttons with modern design
+
+3. MAIN DASHBOARD:
+   - Cards with glassmorphism effect:
+     * Total items checked (with trend arrow)
+     * Issue distribution (pie chart)
+     * Accuracy score (gauge chart)
+     * Regions analyzed (heat map)
+   - Live activity timeline
+   - Quick export buttons (floating action button)
+
+4. INTERACTIVE MAP:
+   - Clean basemap (CartoDB Positron)
+   - Custom marker designs for issue types
+   - Smooth zoom animations
+   - Draw tools for custom areas
+   - Map controls in floating panel
+   - Cluster visualization with count badges
+
+5. DATA TABLE (Modern):
+   - Sticky header with gradient
+   - Row selection with checkboxes
+   - Hover effects on rows
+   - Expandable row details
+   - Column reordering
+   - Density selector (compact/comfortable)
+   - Virtual scrolling for performance
+
+6. DETAIL PANEL (Slide-over):
+   - Wikidata and OSM data side-by-side
+   - Before/after comparison view
+   - Image gallery if available
+   - Edit suggestions in formatted cards
+   - Action buttons with icons
+
+7. EXPORT MODAL (Elegant):
+   - Format selection cards
+   - Preview of generated data
+   - Download options (CSV, JSON, XML)
+   - QuickStatements template preview
+   - Copy to clipboard with feedback
+
+8. FEEDBACK COMPONENTS:
+   - Empty state with illustration
+   - Loading skeleton screens
+   - Error states with recovery options
+   - Success toasts with checkmark animation
+   - Progress indicators for long operations
+
+SPECIFIC IMPLEMENTATION DETAILS:
+
+1. MAP IMPROVEMENTS:
+   - Use custom SVG markers
+   - Implement heatmap layer for issue density
+   - Add drawing tools for area selection
+   - Smooth pan/zoom animations
+   - 3D terrain option (optional)
+
+2. TABLE ENHANCEMENTS:
+   - Column grouping by issue type
+   - Cell formatting based on severity
+   - Bulk actions toolbar
+   - Export selected rows only
+   - Column visibility toggle
+
+3. DASHBOARD WIDGETS:
+   - Real-time updating charts
+   - Drill-down capabilities
+   - Comparison with previous periods
+   - Top 10 issues by region
+   - Data quality score over time
+
+4. ACCESSIBILITY:
+   - Full keyboard navigation
+   - Screen reader support
+   - ARIA labels for all interactive elements
+   - Color contrast compliance (WCAG AA)
+   - Reduced motion support
+
+5. PERFORMANCE:
+   - Virtual scrolling for large datasets
+   - Debounced search inputs
+   - API response caching
+   - Lazy loading for images
+   - Code splitting for routes
+
+IMPLEMENTATION PRIORITIES:
+
+1. Set up Tailwind with custom design tokens
+2. Create reusable UI component library
+3. Implement responsive layout with sidebar
+4. Build interactive map with custom styling
+5. Create elegant data table with sorting/filtering
+6. Add dashboard widgets with Recharts
+7. Implement smooth animations with Framer Motion
+8. Add all feedback and empty states
+9. Optimize for mobile and tablet
+10. Polish interactions and micro-animations
+
+EXAMPLE COMPONENT DESIGN:
+
+```tsx
+// Example of a modern card component
+<Card className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1">
+  <div className="absolute inset-0 bg-gradient-to-br from-primary-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+  <CardHeader>
+    <div className="flex items-center justify-between">
+      <Badge variant="success" className="animate-pulse">Live</Badge>
+      <TrendArrow value={12.5} />
+    </div>
+    <CardTitle className="text-gray-900">Data Quality Score</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <GaugeChart value={87} />
+  </CardContent>
+</Card>
+```
+
+Create all files with:
+- Modern, clean TypeScript code
+- JSDoc comments in English
+- French comments for key business logic
+- Responsive design patterns
+- Accessibility attributes
+- Performance optimizations
+- Beautiful visual design with attention to detail
+```
