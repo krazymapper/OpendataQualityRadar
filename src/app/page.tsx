@@ -132,7 +132,7 @@ const AppPage: React.FC = () => {
     description: `Événement ${i + 1}: Description de l'activité`,
   }))
 
-  if (loading || isLoading) {
+  if (loading) {
     return (
       <Layout>
         <LoadingState fullScreen message="Chargement des données..." />

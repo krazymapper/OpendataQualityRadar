@@ -7,7 +7,6 @@ import { Badge } from '../ui/badge'
 import { formatDateTime } from '@/lib/utils/formatters'
 import { SEVERITY_LABELS, SEVERITY_COLORS } from '@/lib/constants/config'
 import type { Issue, WikidataEntity, OSMEntity } from '@/types'
-import { cn } from '@/lib/utils/cn'
 
 export interface DetailPanelProps {
   issue: Issue | null

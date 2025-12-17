@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils/cn'
 export const SearchBar: React.FC = () => {
   const [localQuery, setLocalQuery] = useState('')
   const debouncedQuery = useDebounce(localQuery, 300)
-  const { filters, setFilters } = useIssueStore()
+  const { setFilters } = useIssueStore()
 
   React.useEffect(() => {
     setFilters({ searchQuery: debouncedQuery })

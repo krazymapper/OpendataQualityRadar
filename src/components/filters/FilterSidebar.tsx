@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { X, Filter } from 'lucide-react'
 import { Button } from '../ui/button'
 import { Toggle } from '../ui/toggle'
-import { Select } from '../ui/select'
-import { DateRangePicker, type DateRange } from './DateRangePicker'
+import { DateRangePicker } from './DateRangePicker'
 import { Progress } from '../ui/progress'
 import { useIssueStore } from '@/lib/stores/issue.store'
 import { ISSUE_TYPE_LABELS, SEVERITY_LABELS } from '@/lib/constants/config'
@@ -125,7 +124,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
             </h3>
             <Progress
               value={localFilters.confidenceMin}
-              variant="primary"
+              variant="default"
               showLabel={false}
             />
             <input
@@ -149,7 +148,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onChange={(range) =>
               setLocalFilters({
                 ...localFilters,
-                dateRange: range.start && range.end ? range : undefined,
+                dateRange: range.start && range.end ? { start: range.start, end: range.end } : undefined,
               })
             }
           />

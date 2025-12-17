@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { Marker, useMap } from 'react-leaflet'
-import { createDivIcon } from 'leaflet'
+import L from 'leaflet'
 import { renderToStaticMarkup } from 'react-dom/server'
 import type { Issue } from '@/types'
 import { MAP_CONFIG } from '@/lib/constants/config'
@@ -86,7 +86,7 @@ export const ClusterLayer: React.FC<ClusterLayerProps> = ({ issues, onClusterCli
           </div>
         )
 
-        const icon = createDivIcon({
+        const icon = L.divIcon({
           html: iconHtml,
           className: 'cluster-marker',
           iconSize: [40, 40],

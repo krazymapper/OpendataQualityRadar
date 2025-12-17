@@ -1,6 +1,6 @@
 import React from 'react'
 import { useMap } from 'react-leaflet'
-import { ZoomIn, ZoomOut, RotateCcw, Layers } from 'lucide-react'
+import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react'
 import { Button } from '../ui/button'
 import { MAP_CONFIG } from '@/lib/constants/config'
 import { cn } from '@/lib/utils/cn'

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
 import { X } from 'lucide-react'
-import { Sidebar, type SidebarItem } from './Sidebar'
+import type { SidebarItem } from './Sidebar'
 
 export interface MobileMenuProps {
   isOpen: boolean

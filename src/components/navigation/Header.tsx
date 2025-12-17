@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Search, Menu, Settings, Bell } from 'lucide-react'
-import { Button } from '../ui/button'
 import { SearchBar } from '../filters/SearchBar'
 import { MobileMenu } from './MobileMenu'
 import { useMediaQuery } from '@/lib/hooks/useMediaQuery'

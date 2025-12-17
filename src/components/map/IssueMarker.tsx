@@ -1,6 +1,6 @@
 import React from 'react'
 import { Marker, Popup } from 'react-leaflet'
-import { createDivIcon } from 'leaflet'
+import L from 'leaflet'
 import { renderToStaticMarkup } from 'react-dom/server'
 import type { Issue } from '@/types'
 import { Badge } from '../ui/badge'
@@ -41,7 +41,7 @@ export const IssueMarker: React.FC<IssueMarkerProps> = ({ issue, onClick }) => {
     />
   )
 
-  const icon = createDivIcon({
+  const icon = L.divIcon({
     html: iconHtml,
     className: 'custom-marker',
     iconSize: [24, 24],

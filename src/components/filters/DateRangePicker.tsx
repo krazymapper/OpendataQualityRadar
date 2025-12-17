@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Calendar, X } from 'lucide-react'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { cn } from '@/lib/utils/cn'
 
 export interface DateRange {
@@ -23,8 +22,6 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
   onChange,
   className,
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
-
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = e.target.value ? new Date(e.target.value) : null
     onChange({ ...value, start: date })
@@ -65,7 +62,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
             type="date"
             value={formatDate(value.end)}
             onChange={handleEndDateChange}
-            min={formatDate(value.start || undefined)}
+            min={value.start ? formatDate(value.start) : undefined}
             className="w-full pl-10 pr-3 py-2 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             placeholder="Date de fin"
           />

@@ -45,7 +45,12 @@ export async function fetchWikidataEntity(id: string): Promise<WikidataEntity | 
       coordinates,
       aliases: Object.values(entity.aliases || {})
         .flat()
-        .map((alias: { value: string }) => alias.value),
+        .map((alias: unknown) => {
+          if (typeof alias === 'object' && alias !== null && 'value' in alias) {
+            return (alias as { value: string }).value
+          }
+          return String(alias)
+        }),
     }
 
     apiCache.set(cacheKey, result, 10 * 60 * 1000) // Cache for 10 minutes

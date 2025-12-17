@@ -1,12 +1,10 @@
-import React from 'react'
-import { Tooltip as HeadlessTooltip } from '@headlessui/react'
+import React, { useState } from 'react'
 import { cn } from '@/lib/utils/cn'
 
 export interface TooltipProps {
   content: React.ReactNode
   children: React.ReactElement
   placement?: 'top' | 'bottom' | 'left' | 'right'
-  delay?: number
 }
 
 /**
@@ -16,8 +14,9 @@ export const Tooltip: React.FC<TooltipProps> = ({
   content,
   children,
   placement = 'top',
-  delay = 0,
 }) => {
+  const [isVisible, setIsVisible] = useState(false)
+
   const placements = {
     top: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
     bottom: 'top-full left-1/2 -translate-x-1/2 mt-2',
@@ -33,23 +32,28 @@ export const Tooltip: React.FC<TooltipProps> = ({
   }
 
   return (
-    <HeadlessTooltip>
-      <HeadlessTooltip.Button as={React.Fragment}>{children}</HeadlessTooltip.Button>
-      <HeadlessTooltip.Panel
-        className={cn(
-          'absolute z-50 rounded-lg bg-gray-900 px-3 py-1.5 text-sm text-white shadow-lg',
-          placements[placement]
-        )}
-      >
-        {content}
+    <div
+      className="relative inline-block"
+      onMouseEnter={() => setIsVisible(true)}
+      onMouseLeave={() => setIsVisible(false)}
+    >
+      {children}
+      {isVisible && (
         <div
           className={cn(
-            'absolute w-0 h-0 border-4 border-transparent',
-            arrows[placement]
+            'absolute z-50 rounded-lg bg-gray-900 px-3 py-1.5 text-sm text-white shadow-lg pointer-events-none',
+            placements[placement]
           )}
-        />
-      </HeadlessTooltip.Panel>
-    </HeadlessTooltip>
+        >
+          {content}
+          <div
+            className={cn(
+              'absolute w-0 h-0 border-4 border-transparent',
+              arrows[placement]
+            )}
+          />
+        </div>
+      )}
+    </div>
   )
 }
-
