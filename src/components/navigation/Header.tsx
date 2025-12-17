@@ -3,11 +3,24 @@ import { Search, Menu, Settings, Bell } from 'lucide-react'
 import { SearchBar } from '../filters/SearchBar'
 import { MobileMenu } from './MobileMenu'
 import { useMediaQuery } from '@/lib/hooks/useMediaQuery'
+import type { ViewType } from './Sidebar'
+
+export interface HeaderProps {
+  activeView?: ViewType
+  onViewChange?: (view: ViewType) => void
+  onFiltersClick?: () => void
+  issueCount?: number
+}
 
 /**
  * Main header component with navigation and search
  */
-export const Header: React.FC = () => {
+export const Header: React.FC<HeaderProps> = ({
+  activeView,
+  onViewChange,
+  onFiltersClick,
+  issueCount,
+}) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const isMobile = useMediaQuery('(max-width: 768px)')
 
@@ -70,7 +83,14 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+      <MobileMenu
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        activeView={activeView}
+        onViewChange={onViewChange}
+        onFiltersClick={onFiltersClick}
+        issueCount={issueCount}
+      />
     </header>
   )
 }

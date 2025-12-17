@@ -1,12 +1,15 @@
 import React, { Fragment } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
-import { X } from 'lucide-react'
-import type { SidebarItem } from './Sidebar'
+import { X, Home, Map, Table, BarChart3, Settings, Filter } from 'lucide-react'
+import type { ViewType } from './Sidebar'
 
 export interface MobileMenuProps {
   isOpen: boolean
   onClose: () => void
-  items?: SidebarItem[]
+  activeView?: ViewType
+  onViewChange?: (view: ViewType) => void
+  onFiltersClick?: () => void
+  issueCount?: number
 }
 
 /**
@@ -15,8 +18,75 @@ export interface MobileMenuProps {
 export const MobileMenu: React.FC<MobileMenuProps> = ({
   isOpen,
   onClose,
-  items,
+  activeView = 'dashboard',
+  onViewChange,
+  onFiltersClick,
+  issueCount,
 }) => {
+  const items = [
+    {
+      id: 'dashboard',
+      label: 'Tableau de bord',
+      icon: <Home size={20} />,
+      active: activeView === 'dashboard',
+      onClick: () => {
+        onViewChange?.('dashboard')
+        onClose()
+      },
+    },
+    {
+      id: 'map',
+      label: 'Carte',
+      icon: <Map size={20} />,
+      active: activeView === 'map',
+      onClick: () => {
+        onViewChange?.('map')
+        onClose()
+      },
+    },
+    {
+      id: 'table',
+      label: 'Tableau',
+      icon: <Table size={20} />,
+      active: activeView === 'table',
+      onClick: () => {
+        onViewChange?.('table')
+        onClose()
+      },
+    },
+    {
+      id: 'analytics',
+      label: 'Analyses',
+      icon: <BarChart3 size={20} />,
+      active: activeView === 'analytics',
+      onClick: () => {
+        onViewChange?.('analytics')
+        onClose()
+      },
+    },
+    {
+      id: 'filters',
+      label: 'Filtres',
+      icon: <Filter size={20} />,
+      active: activeView === 'filters',
+      onClick: () => {
+        onFiltersClick?.()
+        onViewChange?.('filters')
+        onClose()
+      },
+      badge: issueCount && issueCount > 0 ? issueCount : undefined,
+    },
+    {
+      id: 'settings',
+      label: 'Paramètres',
+      icon: <Settings size={20} />,
+      active: activeView === 'settings',
+      onClick: () => {
+        onViewChange?.('settings')
+        onClose()
+      },
+    },
+  ]
   return (
     <Transition show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50 lg:hidden" onClose={onClose}>
@@ -59,35 +129,30 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
                       </button>
                     </div>
                     <div className="flex-1 overflow-y-auto p-4">
-                      {items && (
-                        <nav>
-                          <ul className="space-y-1">
-                            {items.map((item) => (
-                              <li key={item.id}>
-                                <button
-                                  onClick={() => {
-                                    item.onClick?.()
-                                    onClose()
-                                  }}
-                                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                                    item.active
-                                      ? 'bg-primary-50 text-primary-700'
-                                      : 'text-gray-700 hover:bg-gray-50'
-                                  }`}
-                                >
-                                  <span className="flex-shrink-0">{item.icon}</span>
-                                  <span className="flex-1 text-left">{item.label}</span>
-                                  {item.badge && (
-                                    <span className="flex-shrink-0 px-2 py-0.5 text-xs font-semibold bg-primary-500 text-white rounded-full">
-                                      {item.badge}
-                                    </span>
-                                  )}
-                                </button>
-                              </li>
-                            ))}
-                          </ul>
-                        </nav>
-                      )}
+                      <nav>
+                        <ul className="space-y-1">
+                          {items.map((item) => (
+                            <li key={item.id}>
+                              <button
+                                onClick={item.onClick}
+                                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                                  item.active
+                                    ? 'bg-primary-50 text-primary-700'
+                                    : 'text-gray-700 hover:bg-gray-50'
+                                }`}
+                              >
+                                <span className="flex-shrink-0">{item.icon}</span>
+                                <span className="flex-1 text-left">{item.label}</span>
+                                {item.badge && (
+                                  <span className="flex-shrink-0 px-2 py-0.5 text-xs font-semibold bg-primary-500 text-white rounded-full">
+                                    {item.badge}
+                                  </span>
+                                )}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </nav>
                     </div>
                   </div>
                 </Dialog.Panel>

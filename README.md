@@ -80,6 +80,36 @@ L'application utilise un design system moderne avec :
 
 Les constantes de configuration sont dans `src/lib/constants/config.ts`
 
+## 🧪 Tests
+
+```bash
+npm run type-check  # Vérification TypeScript
+npm run lint        # Vérification ESLint
+```
+
+## 🚀 Déploiement
+
+```bash
+npm run build
+```
+
+Les fichiers de production seront dans le dossier `dist/`.
+
+## 📚 Documentation
+
+- [Guide de contribution](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
+
+## 🔮 Prochaines étapes
+
+- [ ] Tests unitaires avec Vitest
+- [ ] Tests E2E avec Playwright
+- [ ] Optimisation des performances (code splitting)
+- [ ] Mode sombre
+- [ ] Internationalisation (i18n)
+- [ ] Service Worker pour le mode offline
+- [ ] Intégration continue (CI/CD)
+
 ## 📄 Licence
 
 MIT

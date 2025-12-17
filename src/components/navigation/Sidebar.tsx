@@ -13,28 +13,76 @@ export interface SidebarItem {
   badge?: number
 }
 
-export interface SidebarProps {
-  items?: SidebarItem[]
-  className?: string
-}
+export type ViewType = 'dashboard' | 'map' | 'table' | 'analytics' | 'filters' | 'settings'
 
-const defaultItems: SidebarItem[] = [
-  { id: 'dashboard', label: 'Tableau de bord', icon: <Home size={20} />, active: true },
-  { id: 'map', label: 'Carte', icon: <Map size={20} /> },
-  { id: 'table', label: 'Tableau', icon: <Table size={20} /> },
-  { id: 'analytics', label: 'Analyses', icon: <BarChart3 size={20} /> },
-  { id: 'filters', label: 'Filtres', icon: <Filter size={20} /> },
-  { id: 'settings', label: 'Paramètres', icon: <Settings size={20} /> },
-]
+export interface SidebarProps {
+  activeView?: ViewType
+  onViewChange?: (view: ViewType) => void
+  onFiltersClick?: () => void
+  className?: string
+  issueCount?: number
+}
 
 /**
  * Sidebar navigation component
  */
 export const Sidebar: React.FC<SidebarProps> = ({
-  items = defaultItems,
+  activeView = 'dashboard',
+  onViewChange,
+  onFiltersClick,
   className,
+  issueCount,
 }) => {
   const isMobile = useMediaQuery('(max-width: 768px)')
+
+  const items: SidebarItem[] = [
+    {
+      id: 'dashboard',
+      label: 'Tableau de bord',
+      icon: <Home size={20} />,
+      active: activeView === 'dashboard',
+      onClick: () => onViewChange?.('dashboard'),
+    },
+    {
+      id: 'map',
+      label: 'Carte',
+      icon: <Map size={20} />,
+      active: activeView === 'map',
+      onClick: () => onViewChange?.('map'),
+    },
+    {
+      id: 'table',
+      label: 'Tableau',
+      icon: <Table size={20} />,
+      active: activeView === 'table',
+      onClick: () => onViewChange?.('table'),
+    },
+    {
+      id: 'analytics',
+      label: 'Analyses',
+      icon: <BarChart3 size={20} />,
+      active: activeView === 'analytics',
+      onClick: () => onViewChange?.('analytics'),
+    },
+    {
+      id: 'filters',
+      label: 'Filtres',
+      icon: <Filter size={20} />,
+      active: activeView === 'filters',
+      onClick: () => {
+        onFiltersClick?.()
+        onViewChange?.('filters')
+      },
+      badge: issueCount && issueCount > 0 ? issueCount : undefined,
+    },
+    {
+      id: 'settings',
+      label: 'Paramètres',
+      icon: <Settings size={20} />,
+      active: activeView === 'settings',
+      onClick: () => onViewChange?.('settings'),
+    },
+  ]
 
   if (isMobile) {
     return null // Mobile uses bottom navigation or drawer
@@ -59,6 +107,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     ? 'bg-primary-50 text-primary-700'
                     : 'text-gray-700 hover:bg-gray-50'
                 )}
+                aria-label={item.label}
+                aria-current={item.active ? 'page' : undefined}
               >
                 <span className="flex-shrink-0">{item.icon}</span>
                 <span className="flex-1 text-left">{item.label}</span>

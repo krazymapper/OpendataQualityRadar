@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Filter } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Layout } from './layout'
+import type { ViewType } from '../components/navigation/Sidebar'
 import { StatsCards } from '../components/dashboard/StatsCards'
 import { IssueDistribution } from '../components/dashboard/IssueDistribution'
 import { ActivityTimeline } from '../components/dashboard/ActivityTimeline'
@@ -90,7 +91,7 @@ const generateMockData = (): {
  * Main application page
  */
 const AppPage: React.FC = () => {
-  const [view, setView] = useState<'dashboard' | 'map' | 'table'>('dashboard')
+  const [view, setView] = useState<ViewType>('dashboard')
   const [filterSidebarOpen, setFilterSidebarOpen] = useState(false)
   const [selectedIssue, setSelectedIssue] = useState<Issue | null>(null)
   const [wikidataData, setWikidataData] = useState<WikidataEntity | null>(null)
@@ -140,41 +141,29 @@ const AppPage: React.FC = () => {
     )
   }
 
+  const handleViewChange = (newView: ViewType) => {
+    setView(newView)
+    // Si on clique sur "Filtres" dans la sidebar, ouvrir le FilterSidebar
+    if (newView === 'filters') {
+      setFilterSidebarOpen(true)
+    }
+  }
+
+  const handleFiltersClick = () => {
+    setFilterSidebarOpen(true)
+  }
+
   return (
-    <Layout>
+    <Layout
+      activeView={view}
+      onViewChange={handleViewChange}
+      onFiltersClick={handleFiltersClick}
+      issueCount={issues.length}
+    >
       <div className="space-y-6">
-        {/* View Toggle */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Button
-              onClick={() => setView('dashboard')}
-              variant={view === 'dashboard' ? 'primary' : 'outline'}
-            >
-              Tableau de bord
-            </Button>
-            <Button
-              onClick={() => setView('map')}
-              variant={view === 'map' ? 'primary' : 'outline'}
-            >
-              Carte
-            </Button>
-            <Button
-              onClick={() => setView('table')}
-              variant={view === 'table' ? 'primary' : 'outline'}
-            >
-              Tableau
-            </Button>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              onClick={() => setFilterSidebarOpen(true)}
-              variant="outline"
-              leftIcon={<Filter size={18} />}
-            >
-              Filtres
-            </Button>
-            <ExportMenu issues={issues} />
-          </div>
+        {/* Header Actions */}
+        <div className="flex items-center justify-end gap-2">
+          <ExportMenu issues={issues} />
         </div>
 
         {/* Active Filters */}
@@ -218,6 +207,93 @@ const AppPage: React.FC = () => {
             transition={{ duration: 0.3 }}
           >
             <DataTable data={issues} onRowClick={handleIssueClick} />
+          </motion.div>
+        )}
+
+        {view === 'analytics' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-6"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {stats && <IssueDistribution stats={stats} />}
+              {stats && <RegionHeatmap stats={stats} />}
+            </div>
+            {stats && <ActivityTimeline events={mockEvents} />}
+          </motion.div>
+        )}
+
+        {view === 'filters' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="max-w-2xl">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Filtres</h2>
+              <p className="text-gray-600 mb-6">
+                Utilisez le panneau de filtres à droite pour affiner vos résultats de recherche.
+              </p>
+              <Button
+                onClick={() => setFilterSidebarOpen(true)}
+                variant="primary"
+                leftIcon={<Filter size={18} />}
+              >
+                Ouvrir les filtres
+              </Button>
+            </div>
+          </motion.div>
+        )}
+
+        {view === 'settings' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="max-w-4xl"
+          >
+            <h2 className="text-2xl font-semibold text-gray-900 mb-6">Paramètres</h2>
+            <div className="space-y-6">
+              <div className="bg-white rounded-xl border border-gray-200 p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Préférences</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 block mb-2">
+                      Langue
+                    </label>
+                    <select className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500">
+                      <option>Français</option>
+                      <option>English</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 block mb-2">
+                      Thème
+                    </label>
+                    <select className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500">
+                      <option>Clair</option>
+                      <option>Sombre</option>
+                      <option>Système</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white rounded-xl border border-gray-200 p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Notifications</h3>
+                <div className="space-y-3">
+                  <label className="flex items-center gap-3">
+                    <input type="checkbox" className="rounded" defaultChecked />
+                    <span className="text-sm text-gray-700">Notifications par email</span>
+                  </label>
+                  <label className="flex items-center gap-3">
+                    <input type="checkbox" className="rounded" defaultChecked />
+                    <span className="text-sm text-gray-700">Alertes de nouveaux problèmes</span>
+                  </label>
+                </div>
+              </div>
+            </div>
           </motion.div>
         )}
 
