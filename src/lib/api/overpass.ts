@@ -1,5 +1,6 @@
 import { API_CONFIG } from '../constants/config'
 import { apiCache } from './cache'
+import { cacheKey as makeCacheKey } from '../utils/exporters'
 import type { OSMEntity, Coordinates } from '@/types'
 
 /**
@@ -14,7 +15,7 @@ interface OverpassQuery {
  * Execute Overpass API query
  */
 export async function executeOverpassQuery(query: OverpassQuery): Promise<OSMEntity[]> {
-  const cacheKey = `overpass:${btoa(query.query)}`
+  const cacheKey = makeCacheKey('overpass', query.query)
   const cached = apiCache.get<OSMEntity[]>(cacheKey)
   if (cached) return cached
 

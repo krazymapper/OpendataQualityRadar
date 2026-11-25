@@ -161,6 +161,12 @@ const AppPage: React.FC = () => {
       issueCount={issues.length}
     >
       <div className="space-y-6">
+        {/* Données fictives : à remplacer par des détections réelles (Overpass/Wikidata) */}
+        <div role="note" className="rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          <strong>Données de démonstration.</strong> Les problèmes, régions et statistiques affichés sont générés
+          aléatoirement : ils ne décrivent aucune donnée réelle d’OpenStreetMap ou de Wikidata.
+        </div>
+
         {/* Header Actions */}
         <div className="flex items-center justify-end gap-2">
           <ExportMenu issues={issues} />

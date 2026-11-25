@@ -126,7 +126,7 @@ export interface DashboardStats {
 /**
  * Export format options
  */
-export type ExportFormat = 'csv' | 'json' | 'xml' | 'quickstatements';
+export type ExportFormat = 'csv' | 'json' | 'xml';
 
 /**
  * Table column definition

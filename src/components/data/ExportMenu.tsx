@@ -5,6 +5,7 @@ import { Dialog } from '../ui/dialog'
 import { Select } from '../ui/select'
 import { useToast } from '../feedback/ToastProvider'
 import type { Issue, ExportFormat } from '@/types'
+import { toCSV, toXML, MIME } from '@/lib/utils/exporters'
 
 export interface ExportMenuProps {
   issues: Issue[]
@@ -31,14 +32,12 @@ export const ExportMenu: React.FC<ExportMenuProps> = ({
     { value: 'csv', label: 'CSV' },
     { value: 'json', label: 'JSON' },
     { value: 'xml', label: 'XML' },
-    { value: 'quickstatements', label: 'QuickStatements' },
   ]
 
   const formatIcons = {
     csv: FileText,
     json: Code,
     xml: Database,
-    quickstatements: FileText,
   }
 
   const exportData = () => {
@@ -56,57 +55,22 @@ export const ExportMenu: React.FC<ExportMenuProps> = ({
   const generateExportContent = (format: ExportFormat, data: Issue[]): string => {
     switch (format) {
       case 'csv':
-        return generateCSV(data)
+        return toCSV(data)
       case 'json':
         return JSON.stringify(data, null, 2)
       case 'xml':
-        return generateXML(data)
-      case 'quickstatements':
-        return generateQuickStatements(data)
+        return toXML(data)
       default:
         return ''
     }
   }
 
-  const generateCSV = (data: Issue[]): string => {
-    const headers = ['ID', 'Type', 'Sévérité', 'Confiance', 'Description', 'Date']
-    const rows = data.map((issue) => [
-      issue.id,
-      issue.type,
-      issue.severity,
-      issue.confidence.toString(),
-      issue.description,
-      issue.detectedAt.toISOString(),
-    ])
-    return [headers, ...rows].map((row) => row.join(',')).join('\n')
-  }
-
-  const generateXML = (data: Issue[]): string => {
-    return `<?xml version="1.0" encoding="UTF-8"?>
-<issues>
-${data.map((issue) => `  <issue id="${issue.id}">
-    <type>${issue.type}</type>
-    <severity>${issue.severity}</severity>
-    <confidence>${issue.confidence}</confidence>
-    <description>${issue.description}</description>
-    <detectedAt>${issue.detectedAt.toISOString()}</detectedAt>
-  </issue>`).join('\n')}
-</issues>`
-  }
-
-  const generateQuickStatements = (data: Issue[]): string => {
-    return data
-      .filter((issue) => issue.wikidataId)
-      .map((issue) => `${issue.wikidataId}|P1|"${issue.description}"`)
-      .join('\n')
-  }
-
   const downloadFile = (content: string, format: ExportFormat) => {
-    const blob = new Blob([content], { type: 'text/plain' })
+    const blob = new Blob([content], { type: MIME[format] })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `issues.${format === 'quickstatements' ? 'txt' : format}`
+    a.download = `issues.${format}`
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
